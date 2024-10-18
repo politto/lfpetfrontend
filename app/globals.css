@@ -2,17 +2,19 @@
 @tailwind components;
 @tailwind utilities;
 
+
+
 :root {
   --background: #ffffff;
   --foreground: #171717;
 }
 
-@media (prefers-color-scheme: dark) {
+/* @media (prefers-color-scheme: dark) {
   :root {
     --background: #0a0a0a;
     --foreground: #ededed;
   }
-}
+} */
 
 body {
   color: var(--foreground);
@@ -24,4 +26,16 @@ body {
   .text-balance {
     text-wrap: balance;
   }
+}
+
+.noto-sans {
+  font-family: 'Noto Sans Thai', sans-serif;
+}
+
+.roboto {
+  font-family: 'Roboto', sans-serif;
+}
+
+.just-me-again-down-here, .logo-font {
+  font-family: 'Just Me Again Down Here', cursive;
 }
