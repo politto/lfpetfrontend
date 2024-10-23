@@ -45,13 +45,19 @@
 import { IAccount } from "./IAccount";
 import { IPet } from "./IPet";
 
-export interface IPost {
+export interface IPostData {
     postId: number | null,
     postTitle: string | null,
     postContent: string | null,
     postDate: Date | null,
-    account: number,
+    accountId: number,
     postType: string | null,
     postImageLink: string | null,
     petParticipated: IPet[]
+}
+
+export interface IPost {
+    postData: IPostData,
+    email: string,
+    phoneNumber: string,
 }

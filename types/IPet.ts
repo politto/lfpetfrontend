@@ -54,11 +54,11 @@
     var postParticipation: List<PostEntity> = listOf()*/
 
 export interface IPet {
-    petId?: number;
+    petId: number | null;
     petName: string;
     petType: string;
     breed: string;
-    birthDate: Date;
+    birthDate: Date | null;
     gender: string;
     isAdopted: string;
     detail: string;

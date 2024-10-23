@@ -1,7 +1,8 @@
 //axios api
 
 // import { IType1 } from "@/types/IType1";
-import { IPost } from "@/types/IPost";
+import Post from "@/app/components/Post";
+import { IPost, IPostData } from "@/types/IPost";
 import axiosApi, { isAxiosError } from "@/utils/axiosApi";
 import axios, { AxiosError } from "axios";
 
@@ -50,10 +51,16 @@ export const getPostsByAccountId = async (accountId: number, startIndex: number)
     }
 }
 
-export const createPost = async (post: IPost): Promise<IPost> => {
+export const createPost = async (post: IPostData): Promise<IPost> => {
     
     try {
-        const response = await axiosApi.post("/createPost", post);
+        console.log("hey post must be upload")
+        console.log(post)
+        const response = await axiosApi.post("/createPost", post, {
+            headers: {
+            'Content-Type': 'application/json'
+            }
+        });
         return response.data.data;
     } catch (error: any) {
         if (isAxiosError(error)) {
