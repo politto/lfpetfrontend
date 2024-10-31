@@ -34,7 +34,7 @@ export default function PetItem({pet, onDelete, viewOnly}: Props) {
             <strong>Breed:</strong> {pet.breed}
             </Typography>
             <Typography variant="body2" color="text.secondary" className="text-xl">
-            <strong>Birth Date:</strong> {pet.birthDate ? pet.birthDate.toDateString : 'N/A'}
+            <strong>Birth Date:</strong> {pet.birthDate ? pet.birthDate!.toDateString() : 'N/A'}
             </Typography>
             <Typography variant="body2" color="text.secondary" className="text-xl">
             <strong>Gender:</strong> {pet.gender}

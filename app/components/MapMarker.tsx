@@ -22,7 +22,7 @@ export default function MapMarker({draggable, lat, lng, setLat, setLng}: Props) 
         iconUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon.png',
         shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png',})
 
-    const handleMapClick = (event) => {
+    const handleMapClick = (event: L.LeafletMouseEvent) => {
         // alert("huh")
         setPosition(event.latlng);
         console.log('Coordinates:', event.latlng.lat, event.latlng.lng); // Log coordinates
@@ -57,7 +57,7 @@ const center = {
 
 
 
-function MapClickHandler({ handleMapClick }) {
+function MapClickHandler({ handleMapClick }: { handleMapClick: (event: L.LeafletMouseEvent) => void }) {
     useMapEvents({
         click: handleMapClick,
     });
