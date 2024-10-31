@@ -52,8 +52,10 @@ export interface IPostData {
     postDate: Date | null,
     accountId: number,
     postType: string | null,
+    postStatus: string | null,
+    isDeleted: boolean,
     postImageLink: string | null,
-    petParticipated: IPet[]
+    pets: IPet[]
 }
 
 export interface IPost {

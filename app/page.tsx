@@ -24,7 +24,7 @@ export default function Home() {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <main className = "flex flex-col center w-[95vw] m-auto noto-sans">
+      <main className = "flex flex-col center w-[95vw] xl:w-[70vw] m-auto noto-sans">
         <ReactQueryDevtools />
         <PostManager />
         //

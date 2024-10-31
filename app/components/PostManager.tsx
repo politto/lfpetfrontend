@@ -31,7 +31,7 @@ const mockPost: IPost[] = [
       postImageLink: "https://preview.redd.it/what-kind-of-cat-is-crookshanks-v0-8x4srkfs7gdc1.jpeg?auto=webp&s=9c054261b185132b6d29f0f37025dab8ff06a115",
       postStatus: null,
       isDeleted: false,
-      petParticipated: [],
+      pets: [],
     },
     email: "ira@gmail.com",
     phoneNumber: "0123456789",
@@ -47,7 +47,7 @@ const mockPost: IPost[] = [
       postImageLink: null,
       postStatus: null,
       isDeleted: false,
-      petParticipated: [
+      pets: [
         {
           petId: 999,
           petName: "Orange",
@@ -81,7 +81,7 @@ const mockPost: IPost[] = [
       postImageLink: "https://www.catster.com/wp-content/uploads/2023/12/a-persian-cat-sitting-on-a-table-by-the-window_Sergey-Nemirovsky_Shutterstock.jpg",
       postStatus: null,
       isDeleted: false,
-      petParticipated: [],
+      pets: [],
     },
     email: "example@example.com",
     phoneNumber: "0123456789",
@@ -92,19 +92,12 @@ const mockPost: IPost[] = [
       postTitle: "My dog lost",
       postContent: "ss",
       postDate: new Date("2024-10-23T14:40:38.816+00:00"),
-      account: {
-        accountId: 2,
-        accountName: "Tawan",
-        sessionToken: "examplePassword",
-        email: "example@example.com",
-        phoneNumber: "0123456789",
-        isDeleted: false,
-      },
+      accountId: 2,
       postType: "Lost",
       postImageLink: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSRwvb0LbRpkFDIGgHKi6AzarE36qdQa_FlIQ&s",
       postStatus: null,
       isDeleted: false,
-      petParticipated: [
+      pets: [
         {
           petId: 888,
           petName: "cutecow",
@@ -152,15 +145,15 @@ export default function PostManager({}: Props) {
   const [isOnlyMyPosts, setisOnlyMyPosts] = useState<boolean>(false);
   const [includedPet, setIncludedPet] = useState<IPet[]>([])
 
-  // const { data, isLoading, isError, error } = useQuery({
-  //   queryKey: ['repoData', beginFetchIdx],
-  //   queryFn: () => getPosts20(beginFetchIdx),
-  //   // keepPreviousData: true,
-  // })
-  const data = mockPost;
-  const isLoading = false;
-  const isError = false;
-  const error = null;
+  const { data, isLoading, isError, error } = useQuery({
+    queryKey: ['repoData', beginFetchIdx],
+    queryFn: () => getPosts20(beginFetchIdx),
+    // keepPreviousData: true,
+  })
+  // const data = mockPost;
+  // const isLoading = false;
+  // const isError = false;
+  // const error = null;
 
   const loadMorePosts = () => {
     

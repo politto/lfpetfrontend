@@ -23,7 +23,7 @@ const PetManager = ({includedPet, setIncludedPet, lat, lng}: Props) => {
       breed: "",
       birthDate: null,
       gender: "",
-      isAdopted: "",
+      isAdopted: false,
       detail: "",
       lastLat: -1,
       lastLng: -1,
@@ -33,12 +33,22 @@ const PetManager = ({includedPet, setIncludedPet, lat, lng}: Props) => {
       lastPicLink: "",
       isDeleted: false,
     })
+    const [deleteImageQueryEnabled, setDeleteImageQueryEnabled] = useState<boolean>(false);
 
     const { data: dataImgUpload, isLoading: isLoadingImgUpload, isError: isErrorImgUpload, error: errorImgUpload } = useQuery({
       queryKey: ['petimg', includedPet.length],
-      queryFn: () => uploadImage(file!, foundPet.petName ? foundPet.petName: ""),
+      queryFn: () => {
+        setQueryEnabled(false)
+        return uploadImage(file!, foundPet.petName ? foundPet.petName: "")
+      },
       enabled: queryEnabled,
       // keepPreviousData: true,
+    })
+
+    const {data: dataImagedelete, isLoading: isLoadingImageDelete, isError: isErrorImageDelete, error: errorImageDelete} = useQuery({
+      queryKey: ['imagerepoDelete', file],
+      queryFn: () => deleteImage(includedPet[includedPet.length]!.lastPicLink!),
+      enabled: deleteImageQueryEnabled,
     })
   
     const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -46,6 +56,28 @@ const PetManager = ({includedPet, setIncludedPet, lat, lng}: Props) => {
       setFile(file);
       
     };
+
+    const clearAllFoundPetAdderProperties = () => {
+      setFoundPet({
+        petId: null,
+        petName: "",
+        petType: "",
+        breed: "",
+        birthDate: null,
+        gender: "",
+        isAdopted: false,
+        detail: "",
+        lastLat: -1,
+        lastLng: -1,
+        isLost: false,
+        // ownerHistList: PetOwnershipEntity[],
+        isDeceased: false,
+        lastPicLink: "",
+        isDeleted: false,
+      })
+
+      setFile(undefined)
+    }
     const handleUpload = async () => {
       console.log(file)
       if (file)setQueryEnabled(true);
@@ -54,6 +86,22 @@ const PetManager = ({includedPet, setIncludedPet, lat, lng}: Props) => {
     const handleDeletePet = (index: number) => {
       setIncludedPet(includedPet.filter((_, i) => i !== index));
     };
+
+    //handle add pet and do some input validation
+    const handleAddPet = () => {
+      if (foundPet.petName === "" || foundPet.petType === "" || foundPet.breed === ""  || foundPet.gender === "" || foundPet.detail === "") {
+        alert("Please fill in all the required fields")
+        return
+      }
+
+      if (foundPet.lastPicLink === "") {
+        alert("Please upload a pet image")
+        return
+      }
+
+      setIncludedPet([...includedPet, foundPet])
+      clearAllFoundPetAdderProperties()
+    }
   
     useEffect(() => {
       if (isErrorImgUpload) {
@@ -95,9 +143,16 @@ const PetManager = ({includedPet, setIncludedPet, lat, lng}: Props) => {
 
         <input type="file" name="file" required onChange={handleFileChange}/>
         
-        <Button variant="outlined" type="submit" disabled={isLoadingImgUpload} onClick={handleUpload}>
-            {isLoadingImgUpload ? 'Uploading...' : 'Upload Image'}
-        </Button>
+        
+        <button 
+            type="submit" 
+            disabled={isLoadingImgUpload} 
+            onClick={handleUpload}
+            className={`rounded ${!foundPet.lastPicLink ? 'bg-blue-500 hover:bg-blue-300' : 'bg-red-500 hover:bg-red-300'} p-2 w-[150px]`}
+            value={file?.name}
+            >
+              {foundPet.lastPicLink ? "delete image" : isLoadingImgUpload ? 'Uploading...' : 'Upload Image'}
+            </button>
         {isErrorImgUpload && <p>Error uploading image: {errorImgUpload.message}</p>}
         {dataImgUpload && <p></p>}
           </div>
@@ -140,8 +195,8 @@ const PetManager = ({includedPet, setIncludedPet, lat, lng}: Props) => {
         <TextField
         label="Birth Date"
         type="date"
-        value={foundPet.birthDate}
-        onChange={(e) => setFoundPet({...foundPet, birthDate: e.target.value ? new Date(e.target.value) : null})}
+        value={foundPet.birthDate?.toISOString().slice(0, 10)}
+        onChange={(e) => setFoundPet({...foundPet, birthDate: new Date(e.target.value)})}
         InputLabelProps={{
           shrink: true,
         }}
@@ -172,18 +227,29 @@ const PetManager = ({includedPet, setIncludedPet, lat, lng}: Props) => {
         />
           </div>
         </div>
-        <div>
+        <div className="flex flex-row gap-2 justify-end">
           {/* button that add foundPet to includedPet */}
           <Button 
           variant="contained" 
-          onClick={() => setIncludedPet([...includedPet, foundPet])}
-          fullWidth
-          sx = {{backgroundColor: 'green', color: 'white'}}
+          onClick={() => {
+            handleAddPet()
+          }}
+          sx={{ backgroundColor: 'lime', color: 'black', width: '200px' }}
           >Add Pet</Button>
+          <Button 
+          variant="contained" 
+          onClick={clearAllFoundPetAdderProperties}
+          sx={{ backgroundColor: 'yellow', color: 'black', width: '200px' }}
+          >Clear Pet Properties</Button>
         </div>
+        
       </div>
       </>
     );
 }
 
 export default PetManager;
+
+function deleteImage(arg0: any): any {
+  throw new Error('Function not implemented.');
+}

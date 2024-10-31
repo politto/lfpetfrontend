@@ -21,3 +21,14 @@ export const uploadImage = (image: File, displayName: string) => {
         }
     });
 }
+
+export const deleteImage = (imgurl: string) => {
+    return axiosApi.delete("/deleteImg?imgName=" + imgurl).then(response => response.data)
+    .catch(error => {
+        if (isAxiosError(error)) {
+            throw new Error(error.response?.data);
+        } else {
+            throw new Error("An error occurred while updating an account.");
+        }
+    });
+}

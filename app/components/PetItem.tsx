@@ -13,9 +13,8 @@ export default function PetItem({pet, onDelete, viewOnly}: Props) {
 
 
   return (
-    <section className="flex flex-col gap-2 rounded-lg bg-gray-100 bg-opacity-30 p-2 border-box mb-2 min-w-[200px]">
 
-      <div className="flex flex-col items-center gap-2">
+      <div className="flex flex-row items-center gap-2 rounded-lg bg-gray-100 bg-opacity-30 p-2 border-box mb-2 min-w-[200px]">
         {pet.lastPicLink && (
           <CardMedia
             component="img"
@@ -35,7 +34,7 @@ export default function PetItem({pet, onDelete, viewOnly}: Props) {
             <strong>Breed:</strong> {pet.breed}
             </Typography>
             <Typography variant="body2" color="text.secondary" className="text-xl">
-            <strong>Birth Date:</strong> {pet.birthDate ? pet.birthDate.toDateString() : 'N/A'}
+            <strong>Birth Date:</strong> {pet.birthDate ? pet.birthDate.toDateString : 'N/A'}
             </Typography>
             <Typography variant="body2" color="text.secondary" className="text-xl">
             <strong>Gender:</strong> {pet.gender}
@@ -55,6 +54,5 @@ export default function PetItem({pet, onDelete, viewOnly}: Props) {
       
       </div>
       
-    </section>
   )
 }

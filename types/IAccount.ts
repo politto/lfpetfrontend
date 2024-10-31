@@ -28,10 +28,13 @@ import { IPost } from "./IPost";
 export interface IAccount {
     accountId: number | null;
     accountName: string;
-    password: string;
+    sessionToken: string;
+    // password: string;
     email: string;
     phoneNumber: string | null;
     isDeleted: boolean;
+    baseLat: number;
+    baseLng: number;
 }
 
 // impl more dtos!

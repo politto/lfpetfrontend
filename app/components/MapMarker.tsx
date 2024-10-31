@@ -1,5 +1,5 @@
 import React, { useCallback, useMemo, useRef, useState } from 'react'
-import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
+import { MapContainer, TileLayer, Marker, Popup, useMapEvents } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
 
@@ -23,6 +23,7 @@ export default function MapMarker({draggable, lat, lng, setLat, setLng}: Props) 
         shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png',})
 
     const handleMapClick = (event) => {
+        // alert("huh")
         setPosition(event.latlng);
         console.log('Coordinates:', event.latlng.lat, event.latlng.lng); // Log coordinates
     };
@@ -34,8 +35,9 @@ export default function MapMarker({draggable, lat, lng, setLat, setLng}: Props) 
             center={center} // Initial coordinates
             zoom={13}
             style={{ height: '80%', width: '100%',  }}
-            onClick={handleMapClick}
-        >
+            
+            >
+            <MapClickHandler handleMapClick={handleMapClick}/>
             <TileLayer
                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                 attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
@@ -43,7 +45,7 @@ export default function MapMarker({draggable, lat, lng, setLat, setLng}: Props) 
             {position && (
                     <DraggableMarker draggable ={draggable} lat={lat} lng={lng} setLat={setLat} setLng={setLng}/>
             )}
-        </MapContainer>
+            </MapContainer>
         </div>
     );
 }
@@ -54,6 +56,13 @@ const center = {
 }
 
 
+
+function MapClickHandler({ handleMapClick }) {
+    useMapEvents({
+        click: handleMapClick,
+    });
+    return null;
+}
 
 function DraggableMarker({ draggable, lat, lng, setLat, setLng }: Props) {
 const [position, setPosition] = useState(center)
@@ -66,7 +75,7 @@ const eventHandlers = useMemo(
         setPosition(marker.getLatLng())
         setLat(marker.getLatLng().lat)
         setLng(marker.getLatLng().lng)
-        alert(marker.getLatLng())
+        
         }
     },
     }),
