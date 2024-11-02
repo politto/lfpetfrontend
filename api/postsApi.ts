@@ -12,7 +12,6 @@ export const getPosts20 = async (index: number): Promise<IPost[]> => {
     try {
         const response = await axiosApi.get("/getTwentyPosts?index=" + index);
         const data = response.data;
-        console.log(data);
         return data;
     } catch (error: any) {
         if (isAxiosError(error)) {

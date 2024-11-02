@@ -3,7 +3,7 @@ export interface IPet {
     petName: string;
     petType: string;
     breed: string;
-    birthDate: Date | null;
+    birthDate: Date | null | string;
     gender: string;
     isAdopted: boolean;
     detail: string;

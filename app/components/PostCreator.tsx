@@ -38,7 +38,7 @@ export default function PostCreator({authorizedAccountId}: Props) {
       postDate: null,
       accountId: authorizedAccountId,
       postType: "Lost",
-      postImageLink: null,
+      postImageLink: "",
       pets: [],
       postStatus: "ok",
       isDeleted: false,
@@ -93,8 +93,9 @@ export default function PostCreator({authorizedAccountId}: Props) {
 
   useEffect(() => {
     if (dataPostUpload) {
-      alert("post created")
+      alert("Post created, please reload this window")
       
+      setQueryEnabled(false)
       //reload page
       window.location.reload();
       window.location.href = window.location.href;
@@ -174,6 +175,13 @@ export default function PostCreator({authorizedAccountId}: Props) {
 
   }
 
+  useEffect(() => {
+    console.log("lat from parent:" + lastLat + " Lng form parent: " + lastLng)
+    return () => {
+      
+    };
+  }, [lastLat, lastLng, setLastLat, setLastLng]);
+
     
   return (
     <section className={`border-[4px] rounded-xl flex flex-col gap-4 p-5 [&>*]:flex [&>*]:gap-2
@@ -206,7 +214,7 @@ export default function PostCreator({authorizedAccountId}: Props) {
       </div>
       <hr></hr>
 
-      <div className = "flex-col">
+      <div className = "flex-col bg-white bg-opacity-20 p-2 pb-5 rounded-xl">
         <p className = "text-2xl mt-4 mb-2"> Add overview information for post</p>
         <div className = "flex flex-row items-center gap-1">
           
@@ -238,7 +246,7 @@ export default function PostCreator({authorizedAccountId}: Props) {
 
         
         </div>
-        <div className = "justify-center m-auto">
+        <div className = "justify-center m-auto ">
           {
             protoPost.postImageLink ? (
               <>
@@ -287,12 +295,26 @@ export default function PostCreator({authorizedAccountId}: Props) {
 
       
       
-      <div className="flex flex-row gap-4">
-        <Button variant="outlined" type="submit" disabled={isLoadingImgUpload} onClick={handleUploadPost} className = "text-2xl w-full">
-            post
+      <div className="flex flex-row gap-4 mt-4">
+        <Button 
+          variant="contained" 
+          color="success" 
+          type="submit" 
+          disabled={isLoadingImgUpload} 
+          onClick={handleUploadPost} 
+          className="text-2xl w-3/5 py-3 rounded-lg shadow-lg transform transition-transform hover:scale-105"
+        >
+          Post
         </Button>
-        <Button variant="outlined" type="submit" disabled={isLoadingImgUpload} onClick={() => clearProtoPostData()} className = "text-2xl w-full">
-            cancle
+        <Button 
+          variant="contained" 
+          color="error" 
+          type="button" 
+          disabled={isLoadingImgUpload} 
+          onClick={clearProtoPostData} 
+          className="text-2xl w-2/5 py-3 rounded-lg shadow-lg transform transition-transform hover:scale-105"
+        >
+          Cancel
         </Button>
       </div>
 

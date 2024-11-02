@@ -161,6 +161,13 @@ export default function PostManager({}: Props) {
   }
 
   useEffect(() => {
+    setBeginFetchIdx(beginFetchIdx)
+    return () => {
+      
+    };
+  }, [beginFetchIdx]);
+
+  useEffect(() => {
     console.log('Fetched posts:', posts);
     if (isError) {
       console.error('Error fetching posts:', error);

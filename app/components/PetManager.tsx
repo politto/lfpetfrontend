@@ -89,6 +89,8 @@ const PetManager = ({includedPet, setIncludedPet, lat, lng}: Props) => {
 
     //handle add pet and do some input validation
     const handleAddPet = () => {
+      foundPet.lastLat = lat;
+      foundPet.lastLng = lng;
       if (foundPet.petName === "" || foundPet.petType === "" || foundPet.breed === ""  || foundPet.gender === "" || foundPet.detail === "") {
         alert("Please fill in all the required fields")
         return
@@ -97,6 +99,10 @@ const PetManager = ({includedPet, setIncludedPet, lat, lng}: Props) => {
       if (foundPet.lastPicLink === "") {
         alert("Please upload a pet image")
         return
+      }
+
+      if (foundPet.lastLat === -1 || foundPet.lastLng === -1) {
+        alert("damn map")
       }
 
       setIncludedPet([...includedPet, foundPet])
@@ -124,7 +130,7 @@ const PetManager = ({includedPet, setIncludedPet, lat, lng}: Props) => {
         ))
       }
       </div>
-      <div className="flex flex-col gap-2 rounded-tl-xl rounded-tr-xl bg-red-200 bg-opacity-20 p-2">
+      <div className="flex flex-col gap-2 rounded-tl-xl rounded-tr-xl bg-white bg-opacity-20 p-2">
         <div className="flex flex-col md:flex-row gap-2 items-center">
         <div className = "rounded bg-gray-100 bg-opacity-30 p-2 border-box">
           <div className="justify-center m-auto ">
@@ -195,8 +201,8 @@ const PetManager = ({includedPet, setIncludedPet, lat, lng}: Props) => {
         <TextField
         label="Birth Date"
         type="date"
-        value={foundPet.birthDate?.toISOString().slice(0, 10)}
-        onChange={(e) => setFoundPet({...foundPet, birthDate: new Date(e.target.value)})}
+        value={foundPet.birthDate ? new Date(foundPet.birthDate).toISOString().split('T')[0] : ''}
+        onChange={(e) => setFoundPet({...foundPet, birthDate: e.target.value ? new Date(e.target.value) : null})}
         InputLabelProps={{
           shrink: true,
         }}

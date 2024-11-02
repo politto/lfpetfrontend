@@ -1,5 +1,5 @@
 import { IPost } from '@/types/IPost'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 
 import Link from 'next/link'
 import MapMarker from './MapMarker'
@@ -22,6 +22,19 @@ export default function Post({post}: Props) {
   //   setLastLat(post.postData.petParticipated[0].lastLat)
   //   setLastLng(post.postData.petParticipated[0].lastLng)
   // }
+
+  //get lastLat and lastlng from first pet in post prop
+  useEffect(() => {
+    
+    if(post.postData.pets.length > 0) {
+      setLastLat(post.postData.pets[0].lastLat)
+      setLastLng(post.postData.pets[0].lastLng)
+    }
+    return () => {
+      
+    };
+  }, []);
+
   
   console.log(post)
   return (
@@ -62,7 +75,7 @@ export default function Post({post}: Props) {
             </button>
               {isModalOpen && (
                   <MapModal
-                      draggable={true}
+                      draggable={false}
                       lat={lastLat}
                       lng={lastLng}
                       setLat={setLastLat}

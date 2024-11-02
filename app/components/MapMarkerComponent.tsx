@@ -11,12 +11,10 @@ type Props = {
     setLng: (lng: number) => void
 }
 
-const center = {
-    lat: 13.74,
-    lng: 100.52,
-};
+
 
 export default function MapMarkerComponent({ draggable, lat, lng, setLat, setLng }: Props) {
+    const [center, setCenter] = useState({ lat:lat, lng: lng });
     const [position, setPosition] = useState(center);
     const markerRef = useRef<L.Marker>(null);
 
@@ -26,18 +24,28 @@ export default function MapMarkerComponent({ draggable, lat, lng, setLat, setLng
             iconUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon.png',
             shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png',
         });
+            
     }, []);
+
+    useEffect(() => {
+        console.log(center)
+        setCenter({lat:lat, lng:lng})
+        return () => {
+            
+        };
+    }, []);
+
+    
 
     const handleMapClick = (event: L.LeafletMouseEvent) => {
         setPosition(event.latlng);
-        console.log('Coordinates:', event.latlng.lat, event.latlng.lng);
     };
 
     return (
         <div className="overflow-hidden h-full">
             <MapContainer
                 center={center}
-                zoom={13}
+                zoom={15}
                 style={{ height: '80%', width: '100%' }}
             >
                 <MapClickHandler handleMapClick={handleMapClick} />
@@ -68,15 +76,20 @@ function DraggableMarker({ draggable, lat, lng, setLat, setLng }: Props) {
             dragend() {
                 const marker = markerRef.current;
                 if (marker != null) {
-                    setPosition(marker.getLatLng());
-                    setLat(marker.getLatLng().lat);
-                    setLng(marker.getLatLng().lng);
-                    alert(marker.getLatLng());
+                    const newLatLng = marker.getLatLng()
+                    setPosition(newLatLng);
+                    setLat(newLatLng.lat);
+                    setLng(newLatLng.lng);
+                    alert(lat + " " + newLatLng.lat);
                 }
             },
         }),
-        []
+        [setLat, setLng]
     );
+
+    useEffect(() => {
+        setPosition({ lat, lng });
+    }, [lat, lng]);
 
     return (
         <Marker
@@ -86,7 +99,14 @@ function DraggableMarker({ draggable, lat, lng, setLat, setLng }: Props) {
             ref={markerRef}
         >
             <Popup minWidth={90} autoClose keepInView>
-                <h3 className="text-xl">Drag this pin to last known location</h3>
+                {
+                    draggable? (
+                        <h3 className="text-xl">Drag this pin to last known location{draggable}</h3>
+                    ):(
+                        //shows pet info
+                        <p>those pet's last known location</p>
+                    )
+                }
             </Popup>
         </Marker>
     );
